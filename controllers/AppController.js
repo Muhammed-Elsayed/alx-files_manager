@@ -3,7 +3,7 @@ import dbClient from '../utils/db';
 
 class AppController {
   /**
-   * { "redis": true, "db": true } with a status code 200
+   * { "redis": true, "db": true }
    */
   static getStatus(request, response) {
     const status = {
@@ -14,7 +14,7 @@ class AppController {
   }
 
   /**
-   * should return the number of users and files in DB:
+   * num of users in db
    */
   static async getStats(request, response) {
     const stats = {
