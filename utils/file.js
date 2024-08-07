@@ -10,9 +10,7 @@ import basicUtils from './basic';
  */
 const fileUtils = {
   /**
-   * Validates if body is valid for creating file
-   * @request {request_object} express request obj
-   * @return {object} object with err and validated params
+   * Validates body
    */
   async validateBody(request) {
     const {
@@ -65,9 +63,7 @@ const fileUtils = {
   },
 
   /**
-   * gets file document from db
-   * @query {obj} query used to find file
-   * @return {object} file
+   * gets file from database
    */
   async getFile(query) {
     const file = await dbClient.filesCollection.findOne(query);
@@ -75,10 +71,8 @@ const fileUtils = {
   },
 
   /**
-   * gets list of file documents from db belonging
-   * to a parent id
-   * @query {obj} query used to find file
-   * @return {Array} list of files
+   * gets list from db belonging
+
    */
   async getFilesOfParentId(query) {
     const fileList = await dbClient.filesCollection.aggregate(query);
@@ -86,11 +80,7 @@ const fileUtils = {
   },
 
   /**
-   * saves files to database and disk
-   * @userId {string} query used to find file
-   * @fileParams {obj} object with attributes of file to save
-   * @FOLDER_PATH {string} path to save file in disk
-   * @return {obj} object with error if present and file
+   * saves files to database 
    */
   async saveFile(userId, fileParams, FOLDER_PATH) {
     const {
@@ -128,8 +118,6 @@ const fileUtils = {
 
     const result = await dbClient.filesCollection.insertOne(query);
 
-    // query.userId = query.userId.toString();
-    // query.parentId = query.parentId.toString();
 
     const file = this.processFile(query);
 
@@ -140,9 +128,6 @@ const fileUtils = {
 
   /**
    * Updates a file document in database
-   * @query {obj} query to find document to update
-   * @set {obj} object with query info to update in Mongo
-   * @return {object} updated file
    */
   async updateFile(query, set) {
     const fileList = await dbClient.filesCollection.findOneAndUpdate(
@@ -155,9 +140,6 @@ const fileUtils = {
 
   /**
    * Makes a file public or private
-   * @request {request_object} express request obj
-   * @setPublish {boolean} true or false
-   * @return {object} error, status code and updated file
    */
   async publishUnpublish(request, setPublish) {
     const { id: fileId } = request.params;
@@ -212,8 +194,6 @@ const fileUtils = {
 
   /**
    * Transform _id into id in a file document
-   * @doc {object} document to be processed
-   * @return {object} processed document
    */
   processFile(doc) {
     // Changes _id for id and removes localPath
@@ -228,10 +208,6 @@ const fileUtils = {
 
   /**
    * Checks if a file is public and belongs to a
-   * specific user
-   * @file {object} file to evaluate
-   * @userId {string} id of user to check ownership
-   * @return {boolean} true or false
    */
   isOwnerAndPublic(file, userId) {
     if (
@@ -244,9 +220,6 @@ const fileUtils = {
 
   /**
    * Gets a files data from database
-   * @file {object} file to obtain data of
-   * @size {string} size in case of file being image
-   * @return {object} data of file or error and status code
    */
   async getFileData(file, size) {
     let { localPath } = file;
